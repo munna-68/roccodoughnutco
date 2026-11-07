@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   Tokens — strictly monochrome
+   ------------------------------------------------------------------ */
+:root {
+  --ink: #161616;
+  --paper: #ececea;
+  --chalk: #f7f7f6;
+  --mist: #d9d9d6;
+  --smoke: #878784;
+  /* accent channels (rgb triplets) used by the legacy rocco-red token */
+  --accent: 22 22 22;
+  --accent-strong: 0 0 0;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --surface: var(--chalk);
+}
+
+/* dark surfaces flip the accent so legacy "red" text stays readable */
+.on-ink,
+.dash {
+  --accent: 255 255 255;
+  --accent-strong: 220 220 218;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-archivo), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-variation-settings: "wdth" 100;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------
+   Type cuts
+   ------------------------------------------------------------------ */
+h1,
+h2,
+h3,
+h4,
+.font-display,
+.cond {
+  font-family: var(--font-archivo), "Arial Narrow", sans-serif;
+  font-variation-settings: "wdth" 62;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+}
+
+/* giant display words */
+.cond-xl {
+  font-family: var(--font-archivo), "Arial Narrow", sans-serif;
+  font-variation-settings: "wdth" 62;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  line-height: 0.84;
+}
+
+/* body-width text in the same family */
+.text-cut {
+  font-variation-settings: "wdth" 100;
+  letter-spacing: 0;
+}
+
+/* Dashboard: a condensed face fights with numbers, so use a calmer cut there */
+.dash h1 {
+  font-variation-settings: "wdth" 62;
+  font-weight: 800;
+}
+.dash h2,
+.dash h3,
+.dash h4,
+.dash .font-display {
+  font-variation-settings: "wdth" 100;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+/* ------------------------------------------------------------------
+   Pill buttons — circle fill rising from below + rolling label
+   ------------------------------------------------------------------ */
+.pill,
+.rocco-btn-primary,
+.rocco-btn-secondary,
+.rocco-btn-outline {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  height: 2.9rem;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--pill-border, transparent);
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.45s var(--ease-out), transform 0.2s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.pill::before,
+.rocco-btn-primary::before,
+.rocco-btn-secondary::before,
+.rocco-btn-outline::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: 170%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--pill-fill);
+  transform: translate(-50%, 35%) scale(0);
+  transition: transform 0.6s var(--ease-out);
+}
+.pill:hover::before,
+.pill:focus-visible::before,
+.rocco-btn-primary:hover::before,
+.rocco-btn-secondary:hover::before,
+.rocco-btn-outline:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+.pill:hover,
+.pill:focus-visible,
+.rocco-btn-primary:hover,
+.rocco-btn-secondary:hover,
+.rocco-btn-outline:hover {
+  color: var(--pill-fg-hover);
+}
+.pill:active {
+  transform: scale(0.97);
+}
+.pill[disabled],
+.pill[aria-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.pill-sm {
+  height: 2.3rem;
+  padding: 0 1.05rem;
+  font-size: 0.8rem;
+}
+.pill-lg {
+  height: 3.4rem;
+  padding: 0 1.9rem;
+  font-size: 0.95rem;
+}
+
+.pill-ink,
+.rocco-btn-primary,
+.rocco-btn-secondary {
+  --pill-bg: var(--ink);
+  --pill-fg: var(--paper);
+  --pill-border: var(--ink);
+  --pill-fill: var(--chalk);
+  --pill-fg-hover: var(--ink);
+}
+.pill-paper {
+  --pill-bg: var(--paper);
+  --pill-fg: var(--ink);
+  --pill-border: var(--paper);
+  --pill-fill: var(--ink);
+  --pill-fg-hover: var(--paper);
+}
+.pill-ghost,
+.rocco-btn-outline {
+  --pill-bg: transparent;
+  --pill-fg: var(--ink);
+  --pill-border: rgb(22 22 22 / 0.28);
+  --pill-fill: var(--ink);
+  --pill-fg-hover: var(--paper);
+}
+.pill-ghost-light {
+  --pill-bg: transparent;
+  --pill-fg: var(--paper);
+  --pill-border: rgb(236 236 234 / 0.45);
+  --pill-fill: var(--paper);
+  --pill-fg-hover: var(--ink);
+}
+
+.roll {
+  display: inline-block;
+  height: 1.2em;
+  line-height: 1.2em;
+  overflow: hidden;
+}
+.roll > span {
+  display: block;
+  transition: transform 0.5s var(--ease-out);
+}
+.pill:hover .roll > span,
+.pill:focus-visible .roll > span {
+  transform: translateY(-100%);
+}
+
+
+/* Rotated sticker tag, like a hand-applied label */
+.sticker {
+  display: inline-block;
+  padding: 0.2rem 0.55rem 0.25rem;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.72rem;
+  font-weight: 700;
+  transform: rotate(-7deg);
+}
+
+/* Underlined form fields */
+.field {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1.5px solid rgb(22 22 22 / 0.35);
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+  color: var(--ink);
+  border-radius: 0;
+  transition: border-color 0.3s;
+}
+.field::placeholder {
+  color: rgb(22 22 22 / 0.4);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* ------------------------------------------------------------------
+   Motion guards
+   ------------------------------------------------------------------ */
+/* Hide entrance targets before hydration, only when JS + motion are on */
+html.motion [data-reveal] {
+  visibility: hidden;
+}
+
+/* Preloader is hidden before paint when it has already played this session */
+html.preloaded .preloader {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+  .pill,
+  .pill::before,
+  .roll > span {
+    transition: none;
+  }
+}
